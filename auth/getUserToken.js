@@ -1,10 +1,8 @@
-const { connectDb } = require("../model/connectDb");
 const jsonwebtoken = require("jsonwebtoken");
 const { Mutex } = require("async-mutex");
 
 // create mutex instance
 const mutex = new Mutex();
-
 /**
  * Create authentication token for a user 
  * @param {String} sql - a string of sql
@@ -12,29 +10,20 @@ const mutex = new Mutex();
  * @param {Object} res - request object
  * @returns token
  */
-async function getUserToken(sql, esc) {
+async function getUserToken(userEmail) {
   // acquire access to the path to do operation (for race condition)
   const release = await mutex.acquire();
   try {
-    const tokenPromise = new Promise((resolve, reject) => {
-      connectDb().query(sql, esc, function (err, result, fields) {
-        // check if error
-        if (err) {
-          reject(err);
-        }
-        // get userId, email and role by destructing
-        const [{ userId, email, role }] = result;
-        // get the secret key
-        const jwtSecret = process.env.SECRET_KEY;
-        // sign the token which expires after 24 hours 
-        const token = jsonwebtoken.sign({ userId, email, role }, jwtSecret, { noTimestamp: true, expiresIn: '24h' }
-        );
-        // resolve
-        resolve({ token })
-      });
-    });
+    const result = await User.findOne({ email: userEmail });
+    // get userId, email and role by destructing
+    const { _id, email, role } = result;
+    // get the secret key
+    const jwtSecret = process.env.SECRET_KEY;
+    // sign the token which expires after 24 hours 
+    const token = jsonwebtoken.sign({ _id, email, role }, jwtSecret, { noTimestamp: true, expiresIn: '24h' }
+    );
     // return promise
-    return tokenPromise;
+    return token
     // catch error
   } catch (error) {
     // log error

@@ -1,25 +1,21 @@
-const { transact } = require("../model/transact");
+const { Profile } = require("../model/profile.model");
 
 /** 
  * Remove a client details
  * @param {object} req - request object
  * @param {object} res - response object to user request
  */
-const deleteClientDetails = async (req, res) => {
+const deleteProfile = async (req, res) => {
     try {
         // get a client id
-        const id = req.body.userId;
-        // prepare an sql to delete a client
-        const sql = `DELETE FROM users WHERE userId=? and role=?`;
-        // protect against sql injection attack
-        const esc = [id,'user'];
-        // get all clients' data
-        const result = await transact(sql, esc);
+        const _id = req.body._id;
+        //    delete profile
+        const profile = await Profile.deleteOne({ _id: _id })
         // send success data
         res.status(200).json({
             status: "success",
-            data: {...result},
-            message: "Client deleted",
+            data: { profile },
+            message: "profile deleted",
         });
 
     } catch (error) {
@@ -36,5 +32,5 @@ const deleteClientDetails = async (req, res) => {
 }
 
 module.exports = {
-    deleteClientDetails
+    deleteProfile
 }

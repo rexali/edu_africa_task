@@ -11,7 +11,7 @@ const mutex = new Mutex();
  * @param {object} next - callback function
  * @returns void
  */
-async function isOnlyAdmin(req, res, next) {
+async function isAuthenticated(req, res, next) {
        // acquire access to path, lock it to prevent race condition
        const release = await mutex.acquire();
        // get login token from the headers or cookies object
@@ -21,7 +21,7 @@ async function isOnlyAdmin(req, res, next) {
               // verify that the token is signed during login
               let decoded = jwt.verify(token, process.env.SECRET_KEY);
               // check userId,email,role are defined in the token
-              if (decoded?.userId && decoded?.email && decoded?.role && decoded?.role=="admin") {
+              if (decoded?._id && decoded?.email && decoded?.role && decoded?.role=="user") {
                      // return the verified user data
                     next();
               } else {
@@ -48,5 +48,5 @@ async function isOnlyAdmin(req, res, next) {
 
 }
 module.exports = {
-       isOnlyAdmin
+       isAuthenticated
 }

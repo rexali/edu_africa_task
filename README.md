@@ -1,4 +1,4 @@
-# Poixel Test
+# Edu Africa Task
 
 ## Setup and Running Instruction
 
@@ -11,7 +11,7 @@
 2. Run in your command terminal: run
     
    ```shell
-    cd poixel-test
+    cd edu-africa-task
    ```
 
 3. Download and install nodejs into your machine: https://nodejs.org/en 

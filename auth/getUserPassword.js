@@ -1,5 +1,5 @@
-const { connectDb } = require("../model/connectDb");
 const { Mutex } = require("async-mutex");
+const { User } = require("../model/user.model");
 
 // create mutex instance
 const mutex = new Mutex();
@@ -10,32 +10,15 @@ const mutex = new Mutex();
  * @param {Array} esc - an array of sql statement input
  * @returns void
  */
-async function getUserPassword(sql, esc) {
+async function getUserPassword(email) {
   // acquire access to the path to do operation (for race condition)
   const release = await mutex.acquire();
   try {
-    // create promise instance
-    const promise = new Promise((resolve, reject) => {
-      // connect to db
-      connectDb().query(sql, esc, function (err, result, fields) {
-        // check if error
-        if (err) {
-          // reject if error
-          reject(err);
-        }
-        // check only one row return
-        if (result.length === 1) {
-          // resolve and send the password
-          let [{ password }] = result
-          resolve(password);
-        } else {
-          // otherwise resove and send empty value
-          resolve("");
-        }
-      });
-    });
-    // return promise
-    return promise;
+    const result = await User.findOne({ email: email });
+    // retrieve the password
+    let { password } = result;
+    
+    return password;
     // catch error
   } catch (error) {
     // log error
@@ -44,7 +27,6 @@ async function getUserPassword(sql, esc) {
     // release path for other
     release();
   }
-
 }
 
 

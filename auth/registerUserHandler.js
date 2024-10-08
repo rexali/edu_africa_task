@@ -1,7 +1,8 @@
 const { hashpass } = require("../utils/hashHelper");
 const { escapeHTML } = require("../utils/escapeHTML");
-const { transact } = require("../model/transact");
 const { Mutex } = require("async-mutex");
+const { User } = require("../model/user.model");
+const { Profile } = require("../model/profile.model");
 
 // create mutex instance
 const mutex = new Mutex();
@@ -17,7 +18,6 @@ const registerUserHandler = async (req, res) => {
     const release = await mutex.acquire();
     // get the reaquest body data
     const {
-        name,
         password,
         email,
     } = req.body;
@@ -26,16 +26,12 @@ const registerUserHandler = async (req, res) => {
     let clientData;
     // get user role
     let role = req.body.role ?? "user";
-    // get businessType
-    let businessType= req.body.businessType ?? "";
 
     try {
         // initilise client data and escape each client details to protect XSS attack
         clientData = {
-            name: escapeHTML(name),
             email: escapeHTML(email),
             password: escapeHTML(password),
-            businessType: escapeHTML(businessType),
             role: escapeHTML(role)
         }
     } catch (error) {
@@ -50,21 +46,22 @@ const registerUserHandler = async (req, res) => {
     try {
         // hash the user password
         const hassPassword = hashpass(clientData.password);
-        // escape email and password to prevent sql injection attack
-        const esc = [clientData.name, clientData.email, hassPassword, clientData.businessType, clientData.role]
-        // prepare sql to enter data to user table
-        const sql = `INSERT INTO users (name, email, password, businessType, role) VALUES (?,?,?,?,?)`;
-
         try {
             // enter data to users table
-            const registrationResult = await transact(sql, esc);
+            const user = await new User({ email, hassPassword, role }).save();
             // check if insert Id is defined
-            if (registrationResult.insertId) {
+            if (user._id) {
+                // create user profile
+                await new Profile({ user }).save();
                 // send result in json data
                 res.status(200).json({
                     status: "success",
                     message: "registration successful",
-                    data: { ...registrationResult }
+                    data: {
+                        _id: user._id,
+                        email: user.email,
+                        role: user.role
+                    }
                 });
             }
             // catch error

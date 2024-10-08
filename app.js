@@ -11,7 +11,8 @@ const { logHandler } = require("./utils/logHandler");
 const { errorHandler } = require("./utils/errorHandler");
 // import auth and admin routes
 const { authRouter } = require("./auth/authRoutes");
-const { adminRouter } = require("./admins/adminRoutes");
+const { profileRouter } = require("./profiles/profileRoutes");
+const { User } = require("./model/user.model");
 // instantiate express
 const app = express();
 // port
@@ -36,11 +37,13 @@ app.use(errorHandler);
 app.use(logHandler);
 // define auth and admin routes
 app.use("/auth", authRouter);
-app.use("/admins", adminRouter);
+app.use("/profiles", profileRouter);
 // server home
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
     try {
         // render home page
+        const user = await User.findOne({email:"alybaba200@gmail.com"});
+        console.log(user);
         res.render("home", {});
     } catch (error) {
         // catch error
