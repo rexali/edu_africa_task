@@ -4,7 +4,6 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const passport = require("./config/passport");
 const session = require("express-session");
-const { ObjectId } = require("mongodb");
 const dotenv = require('dotenv');
 // initiatize the .env
 dotenv.config();
@@ -14,10 +13,6 @@ const { errorHandler } = require("./utils/errorHandler");
 // import auth and admin routes
 const { authRouter } = require("./auth/authRoutes");
 const { profileRouter } = require("./profiles/profileRoutes");
-const { User } = require("./model/user.model");
-const { Profile } = require("./model/profile.model");
-const { Course } = require("./model/course.model");
-const { Module } = require("./model/module.model");
 // instantiate express
 const app = express();
 // port
@@ -46,47 +41,13 @@ app.set('views', 'views');
 app.use(errorHandler);
 //log request info in the console
 app.use(logHandler);
-// define auth and admin routes
+// add auth, profile routes etc
 app.use("/auth", authRouter);
 app.use("/profiles", profileRouter);
 // server home
 app.get("/", async (req, res) => {
     try {
         // render home page
-        // const course = await Course.create({
-        //     title: "My",
-        //     description: "Home",
-        //     instructor: "Ali", // creator or user
-        //     duration: 60,
-        //     level: "intermediate",
-        //     photo: "wert.jpg",
-        //     price: 2000,
-        //     skills: ["fighy", "play"]
-        // }
-        // );
-        // const module = await Module.create({
-        //     title: "Men",
-        //     descriptition: "am",
-        //     resources: ["goo.lk"],
-        //     order: 1,
-        // })
-
-        const user = await User.create({
-            email: "allby43333@gmail.com",
-            password: "2234t6",
-            role: "user", // creator or user
-        });
-
-        const profile = await Profile.create({
-            firstName: "Alalala",
-            lastName: "Babalalal",
-            photo: "wertjpj.jpg",
-            user: { _id: user._id }
-        });
-
-        const course = await Profile.findById(profile._id).populate('user').exec();
-        console.log(course.user);
-
         res.render("home", {});
     } catch (error) {
         // catch error
