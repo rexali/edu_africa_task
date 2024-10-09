@@ -149,7 +149,20 @@
         }
       ```
 
-   3. GET http://localhost:3001/profiles/<:id>
+    3. POST http://localhost:3001/auth/verify
+
+      - Header:
+   
+        ```h
+        {   
+            "Authorization: Bearer <TOKEN>",
+        }
+        ```
+
+      - Body: None
+
+
+   4. GET http://localhost:3001/profiles/<:id>
 
       - Headers:
 
@@ -164,7 +177,7 @@
 
       - Request Body: None
    
-   4. PATCH http://localhost:3001/profiles
+   5. PATCH http://localhost:3001/profiles
 
       - Headers:
 
@@ -189,7 +202,7 @@
         }
         ```
   
-   5. DELETE http://localhost:3001/profiles
+   6. DELETE http://localhost:3001/profiles
 
       - Request Headers:
 
