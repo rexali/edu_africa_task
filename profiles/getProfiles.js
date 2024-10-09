@@ -1,21 +1,19 @@
 const { Profile } = require("../model/profile.model");
 
 /** 
- * Remove a client details
+ * Get an all clients
  * @param {object} req - request object
  * @param {object} res - response object to user request
+ * @returns void
  */
-const deleteProfile = async (req, res) => {
+const getProfiles = async (req, res) => {
     try {
-        // get a client id
-        const _id = req.body._id;
-        //    delete profile
-        const profile = await Profile.deleteOne({ _id})
+        const profile = await Profile.find().populate('user',["_id","email","role"]).exec();
         // send success data
         res.status(200).json({
             status: "success",
-            data: { profile },
-            message: "profile deleted",
+            data: {profile},
+            message: "Profile read",
         });
 
     } catch (error) {
@@ -32,5 +30,5 @@ const deleteProfile = async (req, res) => {
 }
 
 module.exports = {
-    deleteProfile
+    getProfiles
 }

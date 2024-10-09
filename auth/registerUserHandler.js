@@ -48,11 +48,11 @@ const registerUserHandler = async (req, res) => {
         const hassPassword = hashpass(clientData.password);
         try {
             // enter data to users table
-            const user = await new User({ email, hassPassword, role }).save();
+            const user = await new User({ email, password: hassPassword, role }).save();
             // check if insert Id is defined
             if (user._id) {
                 // create user profile
-                await new Profile({ user }).save();
+                await Profile.create({ user: { _id: user._id } });
                 // send result in json data
                 res.status(200).json({
                     status: "success",

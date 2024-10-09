@@ -4,30 +4,35 @@ const { getProfile } = require("./getProfile");
 const { updateProfile } = require("./updateProfile");
 const { deleteProfile } = require("./deleteProfile");
 const { isAuthenticated } = require("../auth/isAuthenticated");
+const { getProfiles } = require("./getProfiles");
 
 // initialize admin router
 const profileRouter = express.Router();
-
-// get all clients
+// get a profile
 profileRouter.get(
-    '/',
-    isAuthenticated,         // middleware to make sure the user is an admin
+    '/:id',
+    isAuthenticated, 
     getProfile
 );
-// update a client
+// get all user profiles
+profileRouter.get(
+    '/',
+    isAuthenticated,
+    getProfiles
+);
+// update a profile
 profileRouter.patch(
-    "/:id",
-    isAuthenticated,        // middleware to make sure the user is an admin
+    "/",
+    isAuthenticated,
     updateProfile
 );
-// delete a client
+// delete a profile
 profileRouter.delete(
-    "/:id",
-    isAuthenticated,        // middleware to make sure the user is an admin
+    "/",
+    isAuthenticated,
     deleteProfile
 );
-
-// export admin router
+// export profile router
 module.exports = {
     profileRouter
 }

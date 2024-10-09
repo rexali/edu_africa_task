@@ -8,4 +8,7 @@ const federationSchema = new mongoose.Schema({
 
 const Federation = mongoose.model('Federation',federationSchema);
 
-module.exports={Federation}
+module.exports={
+    Federation, 
+    // federationSchema
+}

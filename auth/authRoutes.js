@@ -1,4 +1,5 @@
 const express = require("express");
+const passport = require("../config/passport")
 
 const { loginUserHandler } = require("./loginUserHandler");
 const { registerUserHandler } = require("./registerUserHandler");
@@ -6,7 +7,6 @@ const { verifyUserTokenHandler } = require("./verifyUserTokenHandler");
 
 // initialize authentication router
 const authRouter = express.Router();
-
 // login route
 authRouter.post("/login", loginUserHandler);
 // registeration route
@@ -28,8 +28,6 @@ authRouter.get(
         res.status(200).json({ status: "success", data: { result: true }, message: "login successful" })
     }
 );
-
-
 // export the authRouter
 module.exports = {
     authRouter

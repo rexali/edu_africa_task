@@ -2,103 +2,60 @@
 
 ## Setup and Running Instruction
 
-1. Clone this repository: https://github.com/rexali/poixel-test.git
+1. if you don't have mongoDb and install MongoDB database:
+   
+    * Link:  https://mongodb.com
+
+
+2. Clone this repository: https://github.com/rexali/edu_africa_task.git
 
    ```shell
-    git clone https://github.com/rexali/poixel-test.git
+    git clone https://github.com/rexali/edu_africa_task.git
    ``` 
 
-2. Run in your command terminal: run
+3. Run in your command terminal: run
     
    ```shell
     cd edu-africa-task
    ```
 
-3. Download and install nodejs into your machine: https://nodejs.org/en 
+4. Download and install nodejs into your machine: https://nodejs.org/en 
    
    and then open your command line and run:
-
+   
    ```shell
    npm install
+   ``` 
+  
+5. Then open command line and run: 
+
+   ```shell
+   npm start
    ```
-
-4. Download and install MYSQL database installer or workbench:
-   
-    * installer:  https://dev.mysql.com/downloads/installer 
-    
-    OR
-    
-    * workbench:  https://dev.mysql.com/downloads/workbench
-   
-   1. create a database and name it "poixeldb",
-      
-      Query Tab: run
-
-      ```sql
-      CREATE DATABASE poixeldb;
-      ```
-   
-   2. create a table in the database and name it 'users' table with columns as follow: 
-      * name, 
-      * email (add unique property)
-      * password 
-      * role (set the default value to "user")
-      * businessType
-      
-      Query Tab: run
-
-      ```sql
-      CREATE TABLE users(
-      userId int primary key auto_increment,
-      name varchar(200),
-      email unique varchar(200) not null,
-      password varchar(255) not null,
-      role varchar(10) default 'user',
-      businessType varchar(100)
-      );  
-      ````
-
-5. Add new ".env" file to the project root folder and then add the following configuration:
-  
-    1. DB_HOST=localhost
-    2. DB_PORT=your database port
-    3. DB_USER=your database username
-    4. DB_PASS=your database password
-    5. DB_NAME=poixeldb
-    6. SECRET_KEY=asdfghjkil
-  
-   e.g.,
-
-   ![Dot Env File](https://github.com/rexali/poixel-test/blob/master/env.png "DOT ENV FILE EXAMPLE")
-
-    OR
-
-   Visit this link to see an example: https://drive.google.com/file/d/1MksXCtGOC1T4YwBa-8PAh8j1x86oF9Hc/view
-
-
-7. Then open command line and run: npm start
 
 ## CURL for Client-Server Requests and Responses
 
-7. Curl Commands:
+6. Curl Commands:
 
-    1. To rgister a client as the first user, 
+    ### Authentication $ Authorization
+
+    1. To rgister a user as the first user, 
        
        Terminal: run
        
        ```shell
-       curl -d '{ "name":"Aliyu", "email":"talk2bb@yahoo.com", "businessType":"Farming", "password":"ab1234567&^$"}' -H "Content-Type:application/json" -X POST localhost:3001/auth/register
+       curl -d '{"email":"talk2bb@yahoo.com","password":"ab1234567&^$"}' -H "Content-Type:application/json" -X POST localhost:3001/auth/register
        ```
 
-    2. Register another client as the second user and so on , 
+    2. Register another user as the second user and so on , 
        
        Terminal: run
        
        ```shell
-          curl -d '{ "name":"Rexali", "email":"baba@yahoo.com", "businessType":"Fishing", "password":"768?1ghtp"}' -H "Content-Type:application/json" -X POST localhost:3001/auth/register
+          curl -d '{"email":"baba@yahoo.com","password":"768?1ghtp"}' -H "Content-Type:application/json" -X POST localhost:3001/auth/register
        ```
 
-    3. Log in a client (e.g., the first client) to get client authentication token with user role; 
+    3. Log in a user (e.g., the first user) to get user authentication token with user role; 
         
         Terminal: run
         
@@ -106,66 +63,52 @@
         curl -d '{"email":"talk2bb@yahoo.com", "password":"ab1234567&^$"}' -H "Content-Type:application/json" -X POST localhost:3001/auth/login
         ```
 
-    4. Then verify the client authentication token taken from step 3 above add to the rquest header as shown below to prevent CSRF attack & before giving access to the user dashboard;
+    4. Then verify the user authentication token taken from step 3 above add to the rquest header as shown below to prevent CSRF attack & before giving access to the user dashboard;
         
         Terminal: run
         
         ```shell
         curl -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjM4LCJlbWFpbCI6InRhbGsyYmJAeWFob28uY29tIiwicm9sZSI6InVzZXIiLCJleHAiOjE3MjYxNzYxOTN9.i2wjNxnvNxu7YEC9wNZIbDhZbUAqZ5GAC6oMsR84CQQ" -X POST localhost:3001/auth/verify
         ```
+ 
+    ### Profile
 
-    5. Create ONE admin: register an admin with admin role before giving access to the admin to manage clients
-
-       Terminal: run
-       
-       ```shell
-        curl -d '{ "name":"Bello", "email":"talk2baba@gmail.com", "password":"ABa234567!?", "role":"admin"}' -H "Content-Type:application/json" -X POST localhost:3001/auth/register
-       ```
-
-    6. Secure login for ADMIN: Log in an admin to get admin authentication token with admin role; 
-        
-        Terminal: run
-        
-        ```shell
-        curl -d '{ "email":"talk2baba@gmail.com", "password":"ABa234567!?"}' -H "Content-Type:application/json" -X POST localhost:3001/auth/login
-        ```
-
-    7. Secure login for ADMIN: then verify the admin authentication token taken from the step 6 above and then add it to the request header as shown below after "Bearer" to prevent CSRF attack and others before giving access to the admin dashboard to manage clients;
-        
-        Terminal: run
-        
-        ```shell
-         curl -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjM5LCJlbWFpbCI6InRhbGsyYmFiYUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3MjYxNzc3MjN9.Ld0wY-fnmwFrjliW42M0hpYA8wRlRwPBKCSD4nRxKvo" -X POST localhost:3001/auth/verify
-        ```
-
-    8. Get a list of all registered clients. Before you run this command, copy and use the admin authentication token in the step 6 or step 7 and add it to this request header as shown below after "Bearer":
+    8. Get a profile. Before you run this command, copy and use the user authentication token in the step 6 or step 7 and add it to this request header as shown below after "Bearer":
       
         Terminal: run
         
         ```shell
-        curl -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjM5LCJlbWFpbCI6InRhbGsyYmFiYUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3MjYxNzc3MjN9.Ld0wY-fnmwFrjliW42M0hpYA8wRlRwPBKCSD4nRxKvo" -X GET localhost:3001/admins/getclients
+        curl -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzA2YTZlYzQ2NDJlMmQzMGZhNzg0ZjEiLCJlbWFpbCI6InRhbGsyYmJAeWFob28uY29tIiwicm9sZSI6InVzZXIiLCJleHAiOjE3Mjg1NzkwMTB9.xo9Xa6p0CxaqgbRKkxVo5ehi6yhFr4jFOjbmZaxVfLw" -X GET localhost:3001/profiles/6706a6ec4642e2d30fa784f3 
         ````
 
-    9. Update or modify a client data or details. Before you run this command, copy and use the admin authentication token in the step 6 or step 7 and add it to this request header as shown below after "Bearer"
+    9. Get all profile as admin. Before you run this command, copy and use the user authentication token in the step 6 or step 7 and add it to this request header as shown below after "Bearer":
       
         Terminal: run
         
         ```shell
-        curl -d '{ "userId":1, "role":"user", "name":"Aliyu", "email":"talk2bb@yahoo.com", "businessType":"School"}' -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjM5LCJlbWFpbCI6InRhbGsyYmFiYUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3MjYxNzc3MjN9.Ld0wY-fnmwFrjliW42M0hpYA8wRlRwPBKCSD4nRxKvo" -H "Content-Type:application/json" -X PATCH localhost:3001/admins/updateclient
+        curl -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzA2YTZlYzQ2NDJlMmQzMGZhNzg0ZjEiLCJlbWFpbCI6InRhbGsyYmJAeWFob28uY29tIiwicm9sZSI6InVzZXIiLCJleHAiOjE3Mjg1NzkwMTB9.xo9Xa6p0CxaqgbRKkxVo5ehi6yhFr4jFOjbmZaxVfLw" -X GET localhost:3001/profiles
+        ````
+
+    10. Update user profile. Before you run this command, copy and use the user authentication token in the step 6 or step 7 and add it to this request header as shown below after "Bearer"
+      
+        Terminal: run
+        
+        ```shell
+        curl -d '{ "_id":"6706a6ec4642e2d30fa784f3", "firstName":"Aliyu", "lastName":"Bello", "photo":"tal.jpg"}' -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzA2YTZlYzQ2NDJlMmQzMGZhNzg0ZjEiLCJlbWFpbCI6InRhbGsyYmJAeWFob28uY29tIiwicm9sZSI6InVzZXIiLCJleHAiOjE3Mjg1NzkwMTB9.xo9Xa6p0CxaqgbRKkxVo5ehi6yhFr4jFOjbmZaxVfLw" -H "Content-Type:application/json" -X PATCH localhost:3001/profiles
         ```
 
-    10. Delete or remove a client data or details. Before you run this command, copy and use the admin authentication token in the step 6 or step 7 and add it to this request header as shown below after "Bearer"
+    11. Delete or remove a user profile or details. Before you run this command, copy and use the user authentication token in the step 6 or step 7 and add it to this request header as shown below after "Bearer"
        
         Terminal: run
         
         ```shell
-         curl -d '{ "userId":2, "role":"user"}' -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjM5LCJlbWFpbCI6InRhbGsyYmFiYUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3MjYxNzc3MjN9.Ld0wY-fnmwFrjliW42M0hpYA8wRlRwPBKCSD4nRxKvo" -H "Content-Type:application/json" -X DELETE localhost:3001/admins/deleteclient
+         curl -d '{ "_id":"6706c368a64f949f49cfafb1"}' -H "Authorization:Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NzA2YTZlYzQ2NDJlMmQzMGZhNzg0ZjEiLCJlbWFpbCI6InRhbGsyYmJAeWFob28uY29tIiwicm9sZSI6InVzZXIiLCJleHAiOjE3Mjg1NzkwMTB9.xo9Xa6p0CxaqgbRKkxVo5ehi6yhFr4jFOjbmZaxVfLw" -H "Content-Type:application/json" -X DELETE localhost:3001/profiles
         ```
 
 
 ## Postman for Client-Server Requests and Responses
     
-8. Use Postman and use the headers and body data from the above curls commands below:
+7. Use Postman and use the headers and body data from the above curls commands below:
    
    1. POST http://localhost:3001/auth/register 
 
@@ -181,10 +124,9 @@
 
         ```json 
         {
-            "name": "string",  
             "email": "string",
             "password": "string",
-            "role":"string"  /// e.g., "user" or "admin"
+            "role":"string"  /// e.g., "user", "user"
         }
         ```
    
@@ -207,7 +149,7 @@
         }
       ```
 
-   3. GET http://localhost:3001/admins/getclients
+   3. GET http://localhost:3001/profiles/<:id>
 
       - Headers:
 
@@ -222,7 +164,7 @@
 
       - Request Body: None
    
-   4. PATCH http://localhost:3001/admins/updateclient
+   4. PATCH http://localhost:3001/profiles
 
       - Headers:
 
@@ -238,15 +180,16 @@
 
         ```json
         {
-            "userId": "integer", // number which is the user id
-            "name":"string", 
-            "email":"string",
-            "role":"string",
-            "businessType":"string"
+            "_id": "string", // number which is the user id 
+            "firstName": "String",
+            "lastName": "String",
+            "photo": "String",
+            "user": "object",
+            "courses":["object"]
         }
         ```
   
-   5. DELETE http://localhost:3001/admins/deleteclient
+   5. DELETE http://localhost:3001/profiles
 
       - Request Headers:
 
@@ -261,8 +204,7 @@
 
         ```json
         {
-            "userId": 1,  // which is the client’s userId
-            "role":"user"
+            "_id": "string",  // which is the client’s userId
         }
         ```
 
@@ -283,7 +225,7 @@
 
 POST '/auth/register'
 
-- Sends a post request to register a client or an admin
+- Sends a post request to register a user or an user
 
 - Request Headers:
 
@@ -296,11 +238,10 @@ POST '/auth/register'
 - Request Body:
 
 ```json 
-{
-    "name": "string",  
+{ 
     "email": "string",
     "password": "string",
-    "role":"string"  /// e.g., "user" or "admin"
+    "role":"string"  /// e.g., "user" or "user"
  }
  ```
 
@@ -316,7 +257,7 @@ POST '/auth/register'
 
 POST '/auth/login'
 
-- Sends a post request in order to login a user which is an admin
+- Sends a post request in order to login a user which is an user
 
 - Request Headers:
 
@@ -341,16 +282,51 @@ POST '/auth/login'
 {
     "status": "string", 
     "message": "string", 
-    "data": "object"
+    "data": {
+      "token": "string"
+    }
 }
 ```
 
 
-GET '/admins/getclients'
+POST '/auth/verify'
 
-- Fetches all registered clients
+- Sends a post request in order to verify a user authentication token
+
+- Request Headers:
+
+```h
+ {   
+    "Authorization: Bearer <TOKEN>",  
+ }
+```
+
+- Request Body: None
+
+
+- Returns: a single an object of success e.g.,
+
+```json
+{
+    "status": "string", 
+    "message": "string", 
+    "data": {
+      "token": "string",
+      "userId": "string",
+      "email": "string",
+      "role": "string"
+    }
+}
+```
+
+
+GET '/profiles/<:id>'
+
+- Fetches a user profile
 
 - Request Arguments: None
+
+- Request Paramater: replace <:id> in url with the profile "id"
 
 - Request Headers:
 
@@ -365,26 +341,79 @@ GET '/admins/getclients'
 
 - Request Body: None
 
-- Returns: An array of client data object e.g.,
+- Returns: An array of user data object e.g.,
 
 ```json
 {
 
-    "status": "success", 
-    "message": "Clients found", 
-    "data": [{
-      "name":"string", 
-      "email":"string",
-      "role":"string",
-      "businessType":"string" 
-      }]
+    "status": "string", 
+    "message": "string", 
+    "data": { 
+       "profile":{
+        "_id": "string",
+        "firstName":"string",
+        "lastName":"string",
+        "photo":"string",
+        "user": {
+          "_id": "string",
+          "email": "string",
+          "role": "string"
+        },
+        "courses": ["object"]
+      }
+    }
 }
 ```
 
 
-PATCH '/admins/updateclient'
+GET '/profiles'
 
-- Update or modify a client data
+- Fetches all profile
+
+- Request Arguments: None
+
+- Request Paramater: None
+
+- Request Headers:
+
+```h
+ {
+
+  "Authorization: Bearer <TOKEN>",    
+  "Content-Type: application/json"
+
+}
+```
+
+- Request Body: None
+
+- Returns: An array of user data object e.g.,
+
+```json
+{
+
+    "status": "string", 
+    "message": "string", 
+    "data": { 
+       "profile":[{
+        "_id": "string",
+        "firstName":"string",
+        "lastName":"string",
+        "user": {
+          "_id": "string",
+          "email": "string",
+          "role": "string"
+        },
+        "courses": ["object"]
+      }]
+    }
+}
+```
+
+
+PATCH '/profiles'
+
+- Update or modify a user profile data
 
 - Request Arguments: None
 
@@ -402,11 +431,12 @@ PATCH '/admins/updateclient'
 
 ```json
 {
-    "userId": "integer", // number which is the user id
-    "name":"string", 
-    "email":"string",
-    "role":"string",
-    "businessType":"string"
+     "_id": "string", // number which is the user id 
+     "firstName": "String",
+     "lastName": "String",
+     "photo": "String",
+     "user":  "object",
+     "courses": "[object]"
 }
 ```
 
@@ -418,15 +448,21 @@ PATCH '/admins/updateclient'
     "status": "string", 
     "message": "string",
     "data": {
-      "affectedRows":"integer" // a number
-      }
+      "profile": {
+      "acknowledged": "boolean",
+      "modifiedCount": "integer",
+      "upsertedId": null,
+      "upsertedCount": "integer",
+      "matchedCount": "integer"
+    }
+  }
 }
 ```
 
 
-DELETE '/admins/deleteclient'
+DELETE '/profiles'
 
-- Delete a client data
+- Delete a user profile data
 
 - Request Arguments: None
 
@@ -442,7 +478,7 @@ DELETE '/admins/deleteclient'
 - Request Body: 
 ```json
 {
-    "userId": 1  // which is the client’s userId
+    "_id": "String"  // which is the client’s userId
 }
 ```
 
@@ -452,9 +488,13 @@ DELETE '/admins/deleteclient'
 {
 
     "status": "string", 
-    "message": "string", // client deleted 
+    "message": "string", // user deleted 
     "data": {
-      "affectedRows":"integer" // a number
+      "profile":
+        {
+          "acknowledged":"boolean",
+          "deletedCount":"integer"
+        }
       }
 }
 ``` 

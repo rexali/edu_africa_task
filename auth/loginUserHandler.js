@@ -3,7 +3,6 @@ const { getUserToken } = require("./getUserToken");
 const { checkpass } = require("../utils/hashHelper");
 const { escapeHTML } = require("../utils/escapeHTML");
 const { Mutex } = require("async-mutex");
-const { User } = require("../model/user.model");
 
 // create mutex instance
 const mutex = new Mutex();
@@ -19,13 +18,14 @@ const loginUserHandler = async (req, res) => {
     try {
         // get email and password
         const { email, password } = req.body;
+
         //   check if email and password are not null
         if (!email) {
             //    if null, send response
             res.status(404).json({
                 status: "fail",
                 message: "email missing",
-                data: {}
+                data: null
             });
         }
         // check if password is not null
@@ -36,18 +36,23 @@ const loginUserHandler = async (req, res) => {
                 message: "password missing",
                 data: null
             });
-        }
+        };
         //  check if both email and password provided
-        if (email && password) {
-            // make safe email and password by escaping html elements
+
+        // make safe email and password by escaping html elements
+        let escPassword = escapeHTML(password);
+        let escEmail = escapeHTML(email);
+
+        if (escPassword && escEmail ) {
+
             const clientData = {
-                email: escapeHTML(email),
-                password: escapeHTML(password)
+                email: escEmail,
+                password: escPassword
             }
             // get password - user password in database
-            const { password } = await User.findOne({ email: clientData.email });
+            const password = await getUserPassword(clientData.email);    //await User.findOne({ email: clientData.email });
             // check to see it is not empty or undefined
-            if (password) {
+            if (!password) {
                 //    if null, send response
                 res.status(404).json({
                     status: "fail",
@@ -58,7 +63,7 @@ const loginUserHandler = async (req, res) => {
             // verify the database password with password provided by user
             if (checkpass(password, clientData.password)) {
                 // get logged-in token
-                const { token } = await getUserToken(clientData.email);
+                const token  = await getUserToken(clientData.email);
                 //  store in cookie
                 res.cookie('token', token, { httpOnly: true, secure: false });
                 // send token and other detail

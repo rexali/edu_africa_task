@@ -12,4 +12,7 @@ const moduleSchema = new mongoose.Schema({
 
 const Module = mongoose.model('Module', moduleSchema);
 
-module.exports = { Module }
+module.exports = { 
+    Module, 
+    // moduleSchema 
+}

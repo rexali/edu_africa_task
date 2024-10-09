@@ -1,8 +1,8 @@
-import passport from "passport";
-import GoogleStrategy from "passport-google-oauth20";
-import dotenv from "dotenv";
-import { Federation } from "../model/federation.model";
-import { User } from "../model/user.model";
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20");
+const dotenv = require("dotenv");
+const { Federation } = require("../model/federation.model");
+const { User } = require("../model/user.model");
 
 dotenv.config();
 
@@ -11,12 +11,12 @@ dotenv.config();
 passport.use(new GoogleStrategy.Strategy({
     clientID: process.env['GOOGLE_CLIENT_ID'],
     clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-    callbackURL: 'https://localhost:3030/auth/oauth2/redirect/google'
+    callbackURL: 'https://localhost:3030/auth/oauth2/redirect/google'  // replaced "localhost:3030" with production domain
 },
     function (
-        accessToken, 
-        refreshToken, 
-        profile, 
+        accessToken,
+        refreshToken,
+        profile,
         cb
     ) {
         Federation.findOne({ provider: "https://www.google.com", subject: profile.id })
@@ -29,13 +29,13 @@ passport.use(new GoogleStrategy.Strategy({
                         password: "",
                         role: ""
                     }).then((user) => {
-                        Federation.create({ 
-                            provider: "https://www.google.com", 
+                        Federation.create({
+                            provider: "https://www.google.com",
                             subject: profile.id,
-                            user:{
-                                _id:user._id,
-                                email:user.email
-                            } 
+                            user: {
+                                _id: user._id,
+                                email: user.email
+                            }
                         }).then((res) => {
                             var newUser = {
                                 id: user._id, // lastId from User
@@ -45,31 +45,31 @@ passport.use(new GoogleStrategy.Strategy({
                             return cb(null, newUser);
                             // federated credentials
                         }).catch(err => {
-                            if (err) { 
+                            if (err) {
 
                                 return cb(err);
-                             }
+                            }
                         });
                         // user
                     }).catch(err => {
-                        if (err) { 
+                        if (err) {
 
-                            return cb(err); 
+                            return cb(err);
                         }
                     })
                 } else {
                     // The Google account has previously logged in to the app.  Get the
                     // user record linked to the Google account and log the user in.
                     User.findOne({ _id: cred._id }).then((user) => {
-                        if (!user) { 
-                            return cb(null, false); 
+                        if (!user) {
+                            return cb(null, false);
                         }
 
                         return cb(null, user);
                     }).catch(err => {
-                        if (err) { 
+                        if (err) {
 
-                            return cb(err); 
+                            return cb(err);
                         }
                     })
                 }
@@ -77,7 +77,7 @@ passport.use(new GoogleStrategy.Strategy({
                 if (err) {
                     if (err) {
 
-                        return cb(err); 
+                        return cb(err);
                     }
                 }
             })
@@ -96,4 +96,4 @@ passport.deserializeUser(function (id, done) {
     })
 })
 
-export default passport;
+module.exports  = passport;

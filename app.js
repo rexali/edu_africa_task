@@ -2,7 +2,9 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
-
+const passport = require("./config/passport");
+const session = require("express-session");
+const { ObjectId } = require("mongodb");
 const dotenv = require('dotenv');
 // initiatize the .env
 dotenv.config();
@@ -13,6 +15,9 @@ const { errorHandler } = require("./utils/errorHandler");
 const { authRouter } = require("./auth/authRoutes");
 const { profileRouter } = require("./profiles/profileRoutes");
 const { User } = require("./model/user.model");
+const { Profile } = require("./model/profile.model");
+const { Course } = require("./model/course.model");
+const { Module } = require("./model/module.model");
 // instantiate express
 const app = express();
 // port
@@ -27,6 +32,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // apply default cors to the server 
 app.use(cors());
+// session
+app.use(session({ secret: 'secret', resave: true, saveUninitialized: true, cookie: { secure: true } }))
+// initialize newpassport
+app.use(passport.initialize());
+// use newpassport session
+app.use(passport.session())
 // set view engine
 app.set('view engine', 'ejs');
 // set views
@@ -42,8 +53,40 @@ app.use("/profiles", profileRouter);
 app.get("/", async (req, res) => {
     try {
         // render home page
-        const user = await User.findOne({email:"alybaba200@gmail.com"});
-        console.log(user);
+        // const course = await Course.create({
+        //     title: "My",
+        //     description: "Home",
+        //     instructor: "Ali", // creator or user
+        //     duration: 60,
+        //     level: "intermediate",
+        //     photo: "wert.jpg",
+        //     price: 2000,
+        //     skills: ["fighy", "play"]
+        // }
+        // );
+        // const module = await Module.create({
+        //     title: "Men",
+        //     descriptition: "am",
+        //     resources: ["goo.lk"],
+        //     order: 1,
+        // })
+
+        const user = await User.create({
+            email: "allby43333@gmail.com",
+            password: "2234t6",
+            role: "user", // creator or user
+        });
+
+        const profile = await Profile.create({
+            firstName: "Alalala",
+            lastName: "Babalalal",
+            photo: "wertjpj.jpg",
+            user: { _id: user._id }
+        });
+
+        const course = await Profile.findById(profile._id).populate('user').exec();
+        console.log(course.user);
+
         res.render("home", {});
     } catch (error) {
         // catch error

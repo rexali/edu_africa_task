@@ -8,8 +8,8 @@ const { Profile } = require("../model/profile.model");
  */
 const getProfile = async (req, res) => {
     try {
-        const _id = req.body._id
-        const profile = await Profile.findById(_id);
+        const _id = req.params.id
+        const profile = await Profile.findOne().where({_id}).populate('user',["_id","email","role"]).exec();
         // send success data
         res.status(200).json({
             status: "success",
