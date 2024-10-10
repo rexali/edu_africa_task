@@ -3,124 +3,120 @@ var supertest = require('supertest');
 var app = require('./mock.server');
 
 
-describe('Test all the Poixel Test Endpoints', async () => {
+describe('Test all the Edu Africa Task Endpoints', async () => {
 
     var request;
 
-    var clientLoginData = {
+    var userLoginData = {
         email: 'alybaba567@gmail.com',
         password: 'manmustwak',
     }
 
     it('Register user, should return the user data', (done) => {
 
-        let clientRegistrationData = {
+        let userRegistrationData = {
             name: 'alybaba567',
             email: 'alybaba567@gmail.com',
-            password: 'manmustwak',
-            businessType: "Fish Farming"
+            password: 'manmustwak'
         }; // mock data
 
         request = supertest(app)
         .post('/auth/register')
-        .send(clientRegistrationData)
+        .send(userRegistrationData)
         .expect(function (res) {
                 let { status, message, data } = res.body; // destructure response body
                 expect.equal(res.status, 200);
                 expect.equal(status, 'success');
                 expect.equal(message, 'Registration successfull');
-                expect.equal(clientRegistrationData.businessType, data.businessType);
             }).end(done)
     })
 
 
-    it('Log in user or client, should return a user or client data', (done) => {
-        let clientRegistrationData = {
+    it('Log in user or user, should return a user or user data', (done) => {
+        let userRegistrationData = {
             name: 'alybaba567',
             email: 'alybaba567@gmail.com',
-            password: 'manmustwak',
-            businessType: "Fish Farming"
+            password: 'manmustwak'
         }; // mock data
         request = supertest(app)
             .post('/auth/login')
-            .send({ ...clientRegistrationData })
+            .send({ ...userRegistrationData })
             .expect(function (res) {
                 let { status, message, data } = res.body; // destructure response
                 expect.equal(res.status, 200);
                 expect.equal(status, 'success');
                 expect.equal(message, 'Login successfull');
-                expect.equal(clientLoginData.email, data.email)
+                expect.equal(userLoginData.email, data.email)
             }).end(done)
     })
 
 
-    it('Log in admin, should return admin data', (done) => {
-        var adminLogInData = {
+    it('Log in user, should return user data', (done) => {
+        var userLogInData = {
             email: 'alybaba567@gmail.com',
             password: 'manmustwak',
         }; // mock data
         request = supertest(app)
             .post('/auth/login')
-            .send(adminLogInData)
+            .send(userLogInData)
             .expect(function (res) {
                 let { status, message, data } = res.body; // destructure response
                 expect.equal(res.status, 200);
                 expect.equal(status, 'success');
                 expect.equal(message, 'Login successfull');
-                expect.equal(adminLogInData.email, data.email)
+                expect.equal(userLogInData.email, data.email)
             }).end(done)
     })
 
 
-    it('List all client, should return a list of registerd clients', (done) => {
+    it('List all user, should return a list of registerd users', (done) => {
 
         let mock_data = [{
             userId: 1,
             name: "Aliyu Bello",
             email: "alybaba2009@gmail.com",
-            role: "user",
-            businessType: "Fish Farming"
+            role: "user"
         }]
 
         request = supertest(app)
-            .get('/admins/getclients')
+            .get('/profiles')
             .send(mock_data)
             .expect(function (res) {
                 let { status, message, data } = res.body; // destructure response
                 expect.equal(res.status, 200);
                 expect.equal(status, 'success');
-                expect.equal(message, 'Clients found');
+                expect.equal(message, 'Users found');
                 expect.deepEqual(mock_data, data);
             }).end(done)
     })
 
 
-    it('Delete a client, should return a client id', (done) => {
+    it('Delete a user, should return a user id', (done) => {
 
-        let clientData = { 
+        let userData = { 
             userId: 1 
         };
 
         request = supertest(app)
-            .delete('/admins/deleteclient')
-            .send(clientData)
+            .delete('/profiles')
+            .send(userData)
             .expect(function (res) {
                 let { status, message, data } = res.body; // destructure response
                 expect.equal(res.status, 200);
                 expect.equal(status, 'success');
                 expect.equal(message, 'Delete successfull');
-                expect.equal(clientData.userId, data.userId);
+                expect.equal(userData.userId, data.userId);
             }).end(done)
     })
 
 
 
-    it('Update a client, should return a client id', (done) => {
+    it('Update a user, should return a user id', (done) => {
 
         let mock_data = { userId: 1 };
 
         request = supertest(app)
-            .patch('/admins/updateclient')
+            .patch('/profiles')
             .send(mock_data)
             .expect(function (res) {
                 let { status, message, data } = res.body; // destructure response

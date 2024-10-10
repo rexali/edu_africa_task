@@ -37,13 +37,11 @@ const loginUserHandler = async (req, res) => {
                 data: null
             });
         };
-        //  check if both email and password provided
-
         // make safe email and password by escaping html elements
         let escPassword = escapeHTML(password);
         let escEmail = escapeHTML(email);
-
-        if (escPassword && escEmail ) {
+        //  check if both email and password provided
+        if (escPassword && escEmail) {
 
             const clientData = {
                 email: escEmail,
@@ -63,7 +61,7 @@ const loginUserHandler = async (req, res) => {
             // verify the database password with password provided by user
             if (checkpass(password, clientData.password)) {
                 // get logged-in token
-                const token  = await getUserToken(clientData.email);
+                const token = await getUserToken(clientData.email);
                 //  store in cookie
                 res.cookie('token', token, { httpOnly: true, secure: false });
                 // send token and other detail

@@ -22,7 +22,7 @@ app.use(cors());
 app.get("/", (req, res) => {
     res.status(500).json({
         status: "success",
-        data: { name: "Poixel" },
+        data: { name: "Edu Africa" },
         message: "Homepage loaded"
     });
 });
@@ -50,17 +50,17 @@ app.post("/auth/login", (req, res) => {
 })
 
 
-app.get("/admins/getclients", (req, res) => {
+app.get("/profiles", (req, res) => {
     
     res.status(200).json({
         status: "success",
         data: req.body,
-        message: "Clients found"
+        message: "Users found"
     });
 })
 
 
-app.delete("/admins/deleteclient", (req, res) => {
+app.delete("/profiles", (req, res) => {
 
     res.status(200).json({
         status: "success",
@@ -70,7 +70,7 @@ app.delete("/admins/deleteclient", (req, res) => {
 });
 
 
-app.patch("/admins/updateclient", (req, res) => {
+app.patch("/profiles", (req, res) => {
     let mock_data = { ...req.body}
     res.status(200).json({
         status: "success",
