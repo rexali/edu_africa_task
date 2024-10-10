@@ -8,7 +8,15 @@ const { Notification } = require("../model/notification.model");
  */
 const getNotifications = async (req, res) => {
     try {
-        const notification = await Notification.find().populate('user', ["_id", "email", "role"]).exec();
+        const page = parseInt(req.params?.page ?? 1);
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
+        const notification = await Notification.find()
+            .skip(skip)
+            .limit(limit)
+            .populate('user', ["_id", "email", "role"])
+            .exec();
         // send success data
         if (notification != null) {
             res.status(200).json({

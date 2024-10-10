@@ -8,11 +8,19 @@ const { Profile } = require("../model/profile.model");
  */
 const getProfiles = async (req, res) => {
     try {
-        const profile = await Profile.find().populate('user',["_id","email","role"]).exec();
+        const page = parseInt(req.params?.page ?? 1);
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
+        const profile = await Profile.find()
+            .skip(skip)
+            .limit(limit)
+            .populate('user', ["_id", "email", "role"])
+            .exec();
         // send success data
         res.status(200).json({
             status: "success",
-            data: {profile},
+            data: { profile },
             message: "Profile read",
         });
 

@@ -7,7 +7,15 @@ const { Message } = require("../model/message.model");
  */
 const getMessages = async (req, res) => {
     try {
-        const messages = await Message.find().populate('user', ["_id", "email", "role"]).exec();
+        const page = parseInt(req.params?.page ?? 1);
+        const limit = 10;
+        const skip = (page - 1) * limit;
+
+        const messages = await Message.find()
+            .skip(skip)
+            .limit(limit)
+            .populate('user', ["_id", "email", "role"])
+            .exec();
         // send success data
         if (messages != null) {
             res.status(200).json({

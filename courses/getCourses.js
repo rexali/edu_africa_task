@@ -8,11 +8,17 @@ const { Course } = require("../model/course.model");
  */
 const getCourses = async (req, res) => {
     try {
+        const page = parseInt(req.params?.page ?? 1);
+        const limit = 10;
+        const skip = (page - 1) * limit;
         const courses = await Course.find()
-        .populate("users")
-        .populate("ratings")
-        .populate("modules")
-        .populate("enrollments").exec();
+            .skip(skip)
+            .limit(limit)
+            .populate("users")
+            .populate("ratings")
+            .populate("modules")
+            .populate("enrollments")
+            .exec();
         // send success data
         res.status(200).json({
             status: "success",

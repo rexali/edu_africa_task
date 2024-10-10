@@ -12,13 +12,15 @@ const createMessage = async (req, res) => {
         const {
             title,
             comment,
-            _id // userId
+            sender,
+            _id // user Id
         } = req.body;
 
         const message = await Message.create(
             {
                 title,
                 comment,
+                sender,
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 user: { _id }
