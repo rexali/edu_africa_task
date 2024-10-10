@@ -12,5 +12,4 @@ const Notification = mongoose.model('Notification', notificationSchema);
 
 module.exports = { 
     Notification, 
-    // notificationSchema 
 }

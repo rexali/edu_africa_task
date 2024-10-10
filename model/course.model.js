@@ -3,7 +3,7 @@ var { mongoose } = require("../config/database");
 const courseSchema = new mongoose.Schema({
     title: String,
     description: String,
-    instructor: String, // creator or user
+    instructor: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     duration: Number,
     level: String,
     photo: String,
@@ -20,5 +20,4 @@ const Course = mongoose.model('Course', courseSchema);
 
 module.exports = {
     Course,
-    // courseSchema 
 }

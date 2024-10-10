@@ -14,5 +14,4 @@ const Module = mongoose.model('Module', moduleSchema);
 
 module.exports = { 
     Module, 
-    // moduleSchema 
 }

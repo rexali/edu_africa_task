@@ -11,5 +11,4 @@ const Rating = mongoose.model('Rating', ratingSchema);
 
 module.exports = { 
     Rating, 
-    // ratingSchema 
 }

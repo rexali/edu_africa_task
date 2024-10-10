@@ -14,5 +14,4 @@ const Grading = mongoose.model('Grading', gradingSchema);
 
 module.exports = { 
     Grading, 
-    // gradingSchema 
 }

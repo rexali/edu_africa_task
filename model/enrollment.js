@@ -11,5 +11,4 @@ const Enrollment = mongoose.model('Enrollment', enrollmentSchema);
 
 module.exports = { 
     Enrollment, 
-    // enrollmentSchema 
 }

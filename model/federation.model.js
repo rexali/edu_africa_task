@@ -9,6 +9,5 @@ const federationSchema = new mongoose.Schema({
 const Federation = mongoose.model('Federation',federationSchema);
 
 module.exports={
-    Federation, 
-    // federationSchema
+    Federation
 }
