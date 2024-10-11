@@ -13,28 +13,6 @@ const deleteProfile = async (req, res) => {
         const _id = req.body._id;
         // delete profile
         const profile = await Profile.deleteOne({ _id });
-        // const profile = await Profile.findById(_id);
-        // Profile.deleteMany({ _id }).then(() => {
-        //     return User.deleteMany({ _id: profile?.user?._id });
-        // }).then((profile) => {
-        //     return Course.deleteMany({ user: { _id: profile?.user?._id } });
-        // }).then((course) => {
-        //     // send success data
-        //     res.status(200).json({
-        //         status: "success",
-        //         data: { profile: course },
-        //         message: "profile deleted with associated data",
-        //     });
-        // }).catch((error) => {
-        //     console.warn(error);
-        //     // send error response
-        //     res.status(500).json({
-        //         status: "failed",
-        //         data: null,
-        //         message: "Error! "+error.message
-        //     })
-        // })
-
         // send success data
         if (profile.deletedCount) {
             res.status(200).json({
@@ -43,7 +21,7 @@ const deleteProfile = async (req, res) => {
                 message: "profile deleted",
             });
         } else {
-            res.status(200).json({
+            res.status(400).json({
                 status: "success",
                 data: { profile },
                 message: "profile deletion failed",
@@ -57,7 +35,7 @@ const deleteProfile = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error!"
+            message: "Error! "+error.message
         })
     }
 }

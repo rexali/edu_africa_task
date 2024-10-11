@@ -11,7 +11,7 @@ const getMessage = async (req, res) => {
         const _id = req.params.id
         const message = await Message.findById(_id).populate('user', ["_id", "email", "role"]).exec();
         // send success data
-        if (message != null) {
+        if (Object.keys(message).length) {
             res.status(200).json({
                 status: "success",
                 data: { message },
@@ -33,7 +33,7 @@ const getMessage = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error!"
+            message: "Error! "+error.message
         })
     }
 

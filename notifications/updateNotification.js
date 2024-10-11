@@ -42,8 +42,8 @@ const updateNotification = async (req, res) => {
         // send data as json
         res.status(200).json({
             status: "failed",
-            data: result,
-            message: "Update failed"
+            data:null,
+            message: "Error! "+error.message
 
         })
     }

@@ -11,7 +11,7 @@ const getNotification = async (req, res) => {
         const _id = req.params.id
         const notification = await Notification.findById(_id).populate('user', ["_id", "email", "role"]).exec();
         // send success data
-        if (notification != null) {
+        if (Object.keys(notification).length) {
             res.status(200).json({
                 status: "success",
                 data: { notification },
@@ -33,7 +33,7 @@ const getNotification = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error!"
+            message: "Error! "+error.message
         })
     }
 

@@ -1,7 +1,7 @@
 const { Course } = require("../../model/course.model");
 const { Module } = require("../../model/module.model");
 /**
- * Create a course module
+ * Create a module
  * @param {Object} req - request object
  * @param {Object} res - response object
  * @returns void
@@ -11,7 +11,7 @@ const createModule = async (req, res) => {
     try {
         // retrieve the request body data
         const {
-            _id,
+            _id, // course id
             title,
             descriptition,
             resources,
@@ -27,24 +27,32 @@ const createModule = async (req, res) => {
 
         const course = await Course.findById(_id).populate("modules");
         course.modules.push(module._id);
-        module.save();
         course.save();
+        module.save();
 
-        // send data as json
-        res.status(200).json({
-            status: "success",
-            data: { module },
-            message: "Course updated"
-        })
-
+        if (module != null) {
+            // send data as json
+            res.status(200).json({
+                status: "success",
+                data: { module },
+                message: "Module updated"
+            })
+        } else {
+            // send data as json
+            res.status(200).json({
+                status: "success",
+                data: { module },
+                message: "Module creation failed"
+            })
+        }
 
     } catch (error) {
         console.warn(error);
         // send data as json
-        res.status(200).json({
+        res.status(500).json({
             status: "failed",
             data: result,
-            message: "Update failed"
+            message: "Error! " + error.message
 
         })
     }

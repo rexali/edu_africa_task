@@ -40,31 +40,40 @@ const createCourse = async (req, res) => {
             category
         });
 
+        await Enrollment.create({ course: { _id: course._id } });
+        await Rating.create({ course: { _id: course._id } });
+        await Progress.create({ course: { _id: course._id } });
+
         const module = await Module.create({ course: { _id: course._id } });
 
         await Lesson.create({ module: { _id: module._id } });
         await Quiz.create({ module: { _id: module._id } });
         await Grading.create({ module: { _id: module._id } });
 
-        await Enrollment.create({ course: { _id: course._id } });
-        await Rating.create({ course: { _id: course._id } });
-        await Progress.create({ course: { _id: course._id } });
+        if (course !== null) {
+            // send data as json
+            res.status(200).json({
+                status: "success",
+                data: { course },
+                message: "Course updated"
+            })
+        } else {
+            // send data as json
+            res.status(400).json({
+                status: "success",
+                data: { course },
+                message: "Course update failed"
+            })
+        }
 
-
-        // send data as json
-        res.status(200).json({
-            status: "success",
-            data: { course },
-            message: "Course updated"
-        })
 
     } catch (error) {
         console.warn(error);
         // send data as json
-        res.status(200).json({
+        res.status(500).json({
             status: "failed",
-            data: result,
-            message: "Update failed"
+            data: null,
+            message: "Error! " + error.message
 
         })
     }

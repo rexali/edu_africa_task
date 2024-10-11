@@ -16,29 +16,36 @@ const updateProfile = async (req, res) => {
             photo
         } = req.body;
 
-        const profile = await Profile.updateOne(
-            { _id},
+        const profile = await Profile.updateOne({ _id },
             {
                 firstName,
                 lastName,
                 photo
             });
 
-        // send data as json
-        res.status(200).json({
-            status: "success",
-            data: { profile },
-            message: "Profile updated"
-        })
-
+        if (profile.modifiedCount) {
+            // send data as json
+            res.status(200).json({
+                status: "success",
+                data: { profile },
+                message: "Profile updated"
+            })
+        } else {
+            // send data as json
+            res.status(400).json({
+                status: "success",
+                data: { profile },
+                message: "Profile update failed"
+            })
+        }
 
     } catch (error) {
         console.warn(error);
         // send data as json
-        res.status(200).json({
+        res.status(500).json({
             status: "failed",
             data: result,
-            message: "Update failed"
+            message: "Error! " + error.message
 
         })
     }

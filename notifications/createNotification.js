@@ -46,7 +46,7 @@ const createNotification = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: result,
-            message: "Notification failed"
+            message: "Error! "+error.message
 
         })
     }

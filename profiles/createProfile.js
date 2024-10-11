@@ -9,34 +9,40 @@ const createProfile = async (req, res) => {
 
     try {
         // retrieve the request body data
-        const {
-            firstName,
-            lastName,
-            photo
-        } = req.body;
+        const data = req.body;
 
         const profile = await Profile.create(
             {
-                firstName,
-                lastName,
-                photo
+                ...data,
+                user: { _id: data._id }
             });
 
-        // send data as json
-        res.status(200).json({
-            status: "success",
-            data: { profile },
-            message: "Profile created"
-        })
+        if (profile != null) {
+            // send data as json
+            res.status(200).json({
+                status: "success",
+                data: { profile },
+                message: "Profile created"
+            })
+
+        } else {
+            // send data as json
+            res.status(400).json({
+                status: "success",
+                data: { profile },
+                message: "Profile creation failed"
+            })
+
+        }
 
 
     } catch (error) {
         console.warn(error);
         // send data as json
-        res.status(200).json({
+        res.status(500).json({
             status: "failed",
-            data: result,
-            message: "profile failed"
+            data: null,
+            message: "Error! " + error.message
 
         })
     }

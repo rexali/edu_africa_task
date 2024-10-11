@@ -56,7 +56,7 @@ const registerUserHandler = async (req, res) => {
                 // send result in json data
                 res.status(200).json({
                     status: "success",
-                    message: "registration successful",
+                    message: "Registration successful",
                     data: {
                         _id: user._id,
                         email: user.email,
@@ -70,7 +70,7 @@ const registerUserHandler = async (req, res) => {
             console.warn(error);
             res.status(400).json({
                 status: "failed",
-                message: "registration unsuccessful",
+                message: "Registration unsuccessful",
                 data: null
             });
         }

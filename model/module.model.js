@@ -7,7 +7,7 @@ const moduleSchema = new mongoose.Schema({
     order:Number,
     course: { type: mongoose.Schema.Types.ObjectId, ref: "Course" },
     lessons:[{ type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }],
-    questions:[{ type: mongoose.Schema.Types.ObjectId, ref: "Question" }]
+    quizzes:[{ type: mongoose.Schema.Types.ObjectId, ref: "Quiz" }]
 });
 
 const Module = mongoose.model('Module', moduleSchema);

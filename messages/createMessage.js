@@ -47,8 +47,8 @@ const createMessage = async (req, res) => {
         // send data as json
         res.status(500).json({
             status: "failed",
-            data: result,
-            message: "Message failed"
+            data: null,
+            message: "Error! " + error.message
 
         })
     }

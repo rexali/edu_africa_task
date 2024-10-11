@@ -43,7 +43,7 @@ const updateMessage = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: result,
-            message: "Update failed"
+            message: "Error! "+error.message
 
         })
     }

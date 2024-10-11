@@ -17,11 +17,12 @@ const updateCourse = async (req, res) => {
             level,
             photo,
             price,
-            skills
+            skills,
+            category,
         } = req.body;
 
         const course = await Course.updateOne(
-            { _id},
+            { _id },
             {
                 $set: { title },
                 $set: { description },
@@ -30,23 +31,33 @@ const updateCourse = async (req, res) => {
                 $set: { level },
                 $set: { photo },
                 $set: { price },
-                $set: { skills }
+                $set: { skills },
+                $set: { category }
             });
 
-        // send data as json
-        res.status(200).json({
-            status: "success",
-            data: { course },
-            message: "Course updated"
-        })
+        if (course.modifiedCount) {
+            // send data as json
+            res.status(200).json({
+                status: "success",
+                data: { course },
+                message: "Course updated"
+            })
+        } else {
+            // send data as json
+            res.status(400).json({
+                status: "success",
+                data: { course },
+                message: "Course update failed"
+            })
+        }
 
     } catch (error) {
         console.warn(error);
         // send data as json
-        res.status(200).json({
+        res.status(500).json({
             status: "failed",
             data: null,
-            message: "Update failed"
+            message: "Error! " + error.message
 
         })
     }

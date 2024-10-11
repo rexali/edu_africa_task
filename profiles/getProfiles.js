@@ -12,26 +12,35 @@ const getProfiles = async (req, res) => {
         const limit = 10;
         const skip = (page - 1) * limit;
 
-        const profile = await Profile.find()
+        const profiles = await Profile.find()
             .skip(skip)
             .limit(limit)
             .populate('user', ["_id", "email", "role"])
             .exec();
         // send success data
-        res.status(200).json({
-            status: "success",
-            data: { profile },
-            message: "Profile read",
-        });
+        if (profiles != null) {
+            res.status(200).json({
+                status: "success",
+                data: { profiles },
+                message: "Profile read",
+            });
+        } else {
+            res.status(404).json({
+                status: "success",
+                data: { profiles },
+                message: "Profiles not found",
+            });
+        }
+
 
     } catch (error) {
         // catch  the error
         console.warn(error);
         // send error response
-        res.status(200).json({
+        res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error!"
+            message: "Error! " + error.message
         })
     }
 

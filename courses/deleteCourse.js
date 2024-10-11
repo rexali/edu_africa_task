@@ -25,7 +25,7 @@ const deleteCourse = async (req, res) => {
         res.status(200).json({
             status: "failed",
             data: null,
-            message: "Error!"
+            message: "Error! "+error.message
         })
     }
 

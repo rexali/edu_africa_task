@@ -38,7 +38,7 @@ const getMessages = async (req, res) => {
         res.status(500).json({
             status: "failed",
             data: null,
-            message: "Error!"
+            message: "Error! "+error.message
         })
     }
 
