@@ -20,7 +20,7 @@ const deleteModule = async (req, res) => {
                 message: "module deleted",
             });
         } else {
-            // send success data
+            // turn to json data
             res.status(400).json({
                 status: "success",
                 data: { module },

@@ -6,14 +6,14 @@ const { Course } = require("../model/course.model");
  * @param {object} res - response object to user request
  * @returns void
  */
-const getCourses = async (req, res) => {
+const getUserCreatedCourses = async (req, res) => {
     try {
-
+        const userId = req.params.id;
         const page = parseInt(req.params?.page ?? 1);
         const limit = 10;
         const skip = (page - 1) * limit;
 
-        const courses = await Course.find()
+        const courses = await Course.find({ user: { _id: userId } })
             .skip(skip)
             .limit(limit)
             .populate("users")
@@ -75,5 +75,5 @@ const getCourses = async (req, res) => {
 }
 
 module.exports = {
-    getCourses
+    getUserCreatedCourses
 }

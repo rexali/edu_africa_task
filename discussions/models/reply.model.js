@@ -1,4 +1,4 @@
-var { mongoose } = require("../config/database");
+var { mongoose } = require("../../config/database");
 
 const replySchema = new mongoose.Schema({
     post: { type: mongoose.Schema.Types.ObjectId, ref: "Post" },
@@ -13,3 +13,4 @@ const Reply = mongoose.model('Reply', replySchema);
 module.exports = { 
     Reply, 
 }
+

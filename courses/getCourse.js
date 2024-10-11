@@ -10,10 +10,33 @@ const getCourse = async (req, res) => {
     try {
         const _id = req.body._id
         const course = await Course.findById(_id)
-            .populate("users")
+            .populate("user")
             .populate("ratings")
-            .populate("modules")
-            .populate("enrollments").exec();
+            .populate({
+                path: 'modules',
+                model: "Module",
+                select: ["title", "description", "resources", "order"],
+                populate: {
+                    path: "lessons",
+                    model: "Lesson",
+                    select: ["name", "description", "content", "video", "duration"],
+                    populate: [
+                        {
+                            path: "assignments",
+                            model: "Assignment",
+                            select: ["title", "description", "content", "dueDate"],
+                        },
+                        {
+                            path: "quizzes",
+                            model: "Quiz",
+                            select: ["text", "type", "options", "answer"],
+                        }
+                    ]
+                }
+            })
+            .populate("enrollments")
+            .populate("quizzes", ["text", "type", "options", "answer"], "Quiz")
+            .exec();
 
         if (Object.keys(course).length) {
             // send success data
@@ -39,7 +62,7 @@ const getCourse = async (req, res) => {
         res.status(200).json({
             status: "failed",
             data: null,
-            message: "Error! "+error.message
+            message: "Error! " + error.message
         })
     }
 

@@ -10,14 +10,22 @@ const deleteCourse = async (req, res) => {
         // get a client id
         const _id = req.body._id;
         //    delete course
-        const course = await Course.deleteOne({ _id})
+        const course = await Course.deleteOne({ _id });
         // send success data
-        res.status(200).json({
-            status: "success",
-            data: { course },
-            message: "course deleted",
-        });
-
+        if (course.deletedCount) {
+            res.status(200).json({
+                status: "success",
+                data: { course },
+                message: "course deleted",
+            });   
+        } else {
+            res.status(400).json({
+                status: "success",
+                data: { course },
+                message: "course deletion failed",
+            });  
+        }
+        
     } catch (error) {
         // catch  the error
         console.warn(error);
@@ -25,7 +33,7 @@ const deleteCourse = async (req, res) => {
         res.status(200).json({
             status: "failed",
             data: null,
-            message: "Error! "+error.message
+            message: "Error! " + error.message
         })
     }
 

@@ -14,6 +14,8 @@ const courseSchema = new mongoose.Schema({
     user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     ratings: [{ type: mongoose.Schema.Types.ObjectId, ref: "Rating" }],
     enrollments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Enrollment" }],
+    quizzes:[{ type: mongoose.Schema.Types.ObjectId, ref: "Quiz" }],
+    posts:[{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
 });
 
 const Course = mongoose.model('Course', courseSchema);
