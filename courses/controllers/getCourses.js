@@ -26,18 +26,18 @@ const getCourses = async (req, res) => {
                     path: "lessons",
                     model: "Lesson",
                     select: ["name", "description", "content", "video", "duration"],
-                    populate: [
-                        {
-                            path: "assignments",
-                            model: "Assignment",
-                            select: ["title", "description", "content", "dueDate"],
-                        },
-                        {
-                            path: "quizzes",
-                            model: "Quiz",
-                            select: ["text", "type", "options", "answer"],
-                        }
-                    ]
+                    // populate: [
+                    //     {
+                    //         path: "assignments",
+                    //         model: "Assignment",
+                    //         select: ["title", "description", "content", "dueDate"],
+                    //     },
+                    //     {
+                    //         path: "quizzes",
+                    //         model: "Quiz",
+                    //         select: ["text", "type", "options", "answer"],
+                    //     }
+                    // ]
                 }
             })
             .populate("enrollments")

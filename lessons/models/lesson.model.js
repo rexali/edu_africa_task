@@ -7,7 +7,7 @@ const lessonSchema = new mongoose.Schema({
     video: String,
     duration: String,
     order:Number,
-    assignments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Assignments" }],
+    assignments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Assignment" }],
     module: { type: mongoose.Schema.Types.ObjectId, ref: "Module" }
 });
 

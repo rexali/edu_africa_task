@@ -11,7 +11,7 @@ const getLesson = async (req, res) => {
         const _id = req.params.id; // lesson's id
         const lesson = await Lesson.findById(_id)
             .populate("module")
-            .populate("assignments") 
+            // .populate("assignments") 
             .exec();
             
         if (Object.keys(lesson).length) {
