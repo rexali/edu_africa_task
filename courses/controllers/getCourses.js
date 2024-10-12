@@ -16,7 +16,7 @@ const getCourses = async (req, res) => {
         const courses = await Course.find()
             .skip(skip)
             .limit(limit)
-            .populate("user")
+            .populate("instructor")
             .populate("ratings")
             .populate({
                 path: 'modules',

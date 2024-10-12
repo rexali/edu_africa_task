@@ -10,7 +10,7 @@ const getCourse = async (req, res) => {
     try {
         const _id = req.params.id
         const course = await Course.findById(_id)
-            .populate("user")
+            .populate("instructor",["_id","email","role"])
             .populate("ratings")
             .populate({
                 path: 'modules',

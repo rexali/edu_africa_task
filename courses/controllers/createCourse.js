@@ -25,25 +25,27 @@ const createCourse = async (req, res) => {
             photo,
             price,
             skills,
-            category
+            category,
+            userId,
         } = req.body;
 
         const course = await Course.create({
             title,
             description,
-            instructor, // creator or user
+            instructor: { _id: userId }, // creator or user
             duration,
             level,
             photo,
             price,
             skills,
-            category
+            category,
+            user: { _id: userId }
         });
         // create new enrollment, rating, progress
         await Enrollment.create({ course: { _id: course._id } });
         await Rating.create({ course: { _id: course._id } });
         await Progress.create({ course: { _id: course._id } });
-    
+
         // create new module
         const module = await Module.create({ course: { _id: course._id } });
         // create new lesson, quiz, grading

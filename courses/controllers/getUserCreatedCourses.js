@@ -16,7 +16,7 @@ const getUserCreatedCourses = async (req, res) => {
         const courses = await Course.find({ user: { _id: userId } })
             .skip(skip)
             .limit(limit)
-            .populate("users")
+            .populate("user")
             .populate("ratings")
             .populate({
                 path: 'modules',
