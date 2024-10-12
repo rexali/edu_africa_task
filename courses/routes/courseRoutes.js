@@ -5,6 +5,7 @@ const { getCourses } = require("../controllers/getCourses");
 const { updateCourse } = require("../controllers/updateCourse");
 const { getCourse } = require("../controllers/getCourse");
 const { deleteCourse } = require("../controllers/deleteCourse");
+const { createCourse } = require("../controllers/createCourse");
 
 // initialize course router
 const courseRouter = express.Router();
@@ -19,6 +20,12 @@ courseRouter.get(
     '/',
     isAuthenticated,
     getCourses
+);
+// create a course
+courseRouter.post(
+    '/',
+    isAuthenticated,
+    createCourse
 );
 // update a course
 courseRouter.patch(

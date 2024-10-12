@@ -8,7 +8,7 @@ const { Course } = require("../models/course.model");
  */
 const getCourse = async (req, res) => {
     try {
-        const _id = req.body._id
+        const _id = req.params.id
         const course = await Course.findById(_id)
             .populate("user")
             .populate("ratings")
