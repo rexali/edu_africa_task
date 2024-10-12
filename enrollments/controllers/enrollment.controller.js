@@ -1,4 +1,4 @@
-const { Student } = require("../../model/student.model");
+const { Student } = require("../../students/models/student.model");
 const { Enrollment } = require("../models/enrollment.model");
 /**
  * Enroll a user to a course

@@ -11,8 +11,11 @@ dotenv.config();
 const { logHandler } = require("./utils/logHandler");
 const { errorHandler } = require("./utils/errorHandler");
 // import auth and admin routes
-const { authRouter } = require("./auth/authRoutes");
-const { profileRouter } = require("./profiles/profileRoutes");
+const { authRouter } = require("./auth/routes/authRoutes");
+const { profileRouter } = require("./profiles/routes/profileRoutes");
+const { courseRouter } = require("./courses/routes/courseRoutes");
+const { notificationRouter } = require("./notifications/routes/notificationRoutes");
+const { messageRouter } = require("./messages/routes/messageRoutes");
 // instantiate express
 const app = express();
 // port
@@ -44,6 +47,11 @@ app.use(logHandler);
 // add auth, profile routes etc
 app.use("/auth", authRouter);
 app.use("/profiles", profileRouter);
+app.use("/courses", courseRouter);
+app.use("/messages", messageRouter);
+app.use("/notifications", notificationRouter);
+
+
 // server home
 app.get("/", async (req, res) => {
     try {
