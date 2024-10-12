@@ -17,6 +17,7 @@ const { courseRouter } = require("./courses/routes/courseRoutes");
 const { notificationRouter } = require("./notifications/routes/notificationRoutes");
 const { messageRouter } = require("./messages/routes/messageRoutes");
 const { moduleRouter } = require("./modules/routes/moduleRoutes");
+const { lessonRouter } = require("./lessons/routes/lessonRoutes");
 // instantiate express
 const app = express();
 // port
@@ -52,6 +53,8 @@ app.use("/courses", courseRouter);
 app.use("/messages", messageRouter);
 app.use("/notifications", notificationRouter);
 app.use("/modules", moduleRouter);
+app.use("/lessons", lessonRouter);
+
 
 // server home
 app.get("/", async (req, res) => {

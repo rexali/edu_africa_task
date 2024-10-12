@@ -6,33 +6,33 @@ const { createModule } = require("../controllers/createModule");
 const { updateModule } = require("../controllers/updateModule");
 const { deleteModule } = require("../controllers/deleteModule");
 
-// initialize course router
+// initialize module router
 const moduleRouter = express.Router();
-// get a course
+// get a module
 moduleRouter.get(
     '/:id',
     isAuthenticated, 
     getModule
 );
-// create a course
+// create a module
 moduleRouter.post(
     '/',
     isAuthenticated,
     createModule
 );
-// update a course
+// update a module
 moduleRouter.patch(
     "/",
     isAuthenticated,
     updateModule
 );
-// delete a course
+// delete a module
 moduleRouter.delete(
     "/",
     isAuthenticated,
     deleteModule
 );
-// export course router
+// export module router
 module.exports = {
     moduleRouter
 }
