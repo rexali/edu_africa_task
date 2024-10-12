@@ -1,4 +1,4 @@
-const { Module } = require("../../model/module.model");
+const { Module } = require("../models/module.model");
 /**
  * Update a  module
  * @param {Object} req - request object

@@ -1,4 +1,4 @@
-const { Module } = require("../../model/module.model");
+const { Module } = require("../models/module.model");
 
 /** 
  * Get a module
@@ -8,7 +8,7 @@ const { Module } = require("../../model/module.model");
  */
 const getModule = async (req, res) => {
     try {
-        const _id = req.body._id
+        const _id = req.params.id; // module's id
         const module = await Module.findById(_id)
             .populate("lessons")
             .populate("quizzes")
@@ -20,14 +20,14 @@ const getModule = async (req, res) => {
             res.status(200).json({
                 status: "success",
                 data: { module },
-                message: "Course read",
+                message: "Module read",
             });
         } else {
             // send success data
             res.status(400).json({
                 status: "success",
                 data: { module },
-                message: "Course read failed",
+                message: "Module reading failed",
             });
         }
 

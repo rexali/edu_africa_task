@@ -1,4 +1,4 @@
-const { Module } = require("../../model/module.model");
+const { Module } = require("../models/module.model");
 
 /** 
  * Remove a module
@@ -7,8 +7,8 @@ const { Module } = require("../../model/module.model");
  */
 const deleteModule = async (req, res) => {
     try {
-        // get a client id
-        const _id = req.body._id;
+        // get a module's id
+        const _id = req.body._id; 
         //    delete module
         const module = await Module.deleteOne({ _id });
 
@@ -17,14 +17,14 @@ const deleteModule = async (req, res) => {
             res.status(200).json({
                 status: "success",
                 data: { module },
-                message: "module deleted",
+                message: "Module deleted",
             });
         } else {
             // turn to json data
             res.status(400).json({
                 status: "success",
                 data: { module },
-                message: "module deletion failed",
+                message: "Module deletion failed",
             });
         }
 

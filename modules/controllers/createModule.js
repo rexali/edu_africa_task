@@ -1,5 +1,5 @@
 const { Course } = require("../../courses/models/course.model");
-const { Module } = require("../../model/module.model");
+const { Module } = require("../models/module.model");
 /**
  * Create a module
  * @param {Object} req - request object
@@ -22,11 +22,13 @@ const createModule = async (req, res) => {
             title,
             descriptition,
             resources,
-            order
+            order,
+            course: { _id: _id }
         });
-
+        // update course modules
         const course = await Course.findById(_id).populate("modules");
         course.modules.push(module._id);
+        // save
         course.save();
         module.save();
 
@@ -35,7 +37,7 @@ const createModule = async (req, res) => {
             res.status(200).json({
                 status: "success",
                 data: { module },
-                message: "Module updated"
+                message: "Module created"
             })
         } else {
             // send data as json
