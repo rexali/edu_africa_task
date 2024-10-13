@@ -20,6 +20,8 @@ const { moduleRouter } = require("./modules/routes/moduleRoutes");
 const { lessonRouter } = require("./lessons/routes/lessonRoutes");
 const { assignmentRouter } = require("./assignments/routes/assignmentRoutes");
 const { quizRouter } = require("./quizzes/routes/quizRoutes");
+const { submissionRouter } = require("./submissions/routes/submissionRoutes");
+const { ratingRouter } = require("./ratings/routes/ratingRoutes");
 // instantiate express
 const app = express();
 // port
@@ -58,8 +60,8 @@ app.use("/modules", moduleRouter);
 app.use("/lessons", lessonRouter);
 app.use("/assignments", assignmentRouter);
 app.use("/quizzes", quizRouter);
-
-
+app.use("/submissions", submissionRouter);
+app.use("/ratings", ratingRouter);
 
 // server home
 app.get("/", async (req, res) => {

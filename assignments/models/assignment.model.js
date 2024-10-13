@@ -6,7 +6,8 @@ const assignmentSchema = new mongoose.Schema({
     content: String,
     dueDate: Date,
     student:{ type: mongoose.Schema.Types.ObjectId, ref: "Student" },
-    lesson: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" }
+    lesson: { type: mongoose.Schema.Types.ObjectId, ref: "Lesson" },
+    submissions:[{type: mongoose.Schema.Types.ObjectId, ref: "Submission"}]
 });
 
 const Assignment = mongoose.model('Assignment', assignmentSchema);
