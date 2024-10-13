@@ -18,6 +18,8 @@ const { notificationRouter } = require("./notifications/routes/notificationRoute
 const { messageRouter } = require("./messages/routes/messageRoutes");
 const { moduleRouter } = require("./modules/routes/moduleRoutes");
 const { lessonRouter } = require("./lessons/routes/lessonRoutes");
+const { assignmentRouter } = require("./assignments/routes/assignmentRoutes");
+const { quizRouter } = require("./quizzes/routes/quizRoutes");
 // instantiate express
 const app = express();
 // port
@@ -54,6 +56,9 @@ app.use("/messages", messageRouter);
 app.use("/notifications", notificationRouter);
 app.use("/modules", moduleRouter);
 app.use("/lessons", lessonRouter);
+app.use("/assignments", assignmentRouter);
+app.use("/quizzes", quizRouter);
+
 
 
 // server home
