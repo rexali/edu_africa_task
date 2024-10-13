@@ -1,5 +1,6 @@
 const { Student } = require("../../students/models/student.model");
 const { Enrollment } = require("../models/enrollment.model");
+
 /**
  * Enroll a user to a course
  * @param {Object} req - request object
